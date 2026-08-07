@@ -1,0 +1,14 @@
+# Generated tracking reports in cwd
+/bdt-tracking-*.html
+
+__pycache__/
+.DS_Store
+.venv/
+*.egg-info/
+.pytest_cache/
+.env
+mcp/**/.env
+
+# Local archives / scratch
+SKilss.zip
+curl.md

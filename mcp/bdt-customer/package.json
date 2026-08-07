@@ -1,0 +1,43 @@
+{
+  "name": "@dingjian/customer-mcp",
+  "version": "0.2.0",
+  "description": "Yonglitong Badatong (八达通) ERP customer MCP server — list/followup/accounts/freight/follow notes",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "bdt-customer-mcp": "./bin/cli.mjs",
+    "customer-mcp": "./bin/cli.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "pyproject.toml",
+    "README.md",
+    ".env.example"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "bdt",
+    "8dt",
+    "crm",
+    "cursor",
+    "dingjian"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dingjian/bdt_silks.git",
+    "directory": "mcp/bdt-customer"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "start": "node ./bin/cli.mjs",
+    "mcp": "node ./bin/cli.mjs"
+  }
+}

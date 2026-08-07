@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>八达通轨迹报告</title>
+  <style>
+    :root {
+      --bg: #eef3f6;
+      --ink: #10233a;
+      --muted: #5b6b7c;
+      --card: #ffffff;
+      --line: #d5dee7;
+      --accent: #0b6e6a;
+      --accent-soft: #d4efed;
+      --warn: #b45309;
+      --warn-soft: #fff1df;
+      --ok: #157a45;
+      --ok-soft: #def5e7;
+      --info: #1d4f91;
+      --info-soft: #e2edf8;
+      --shadow: 0 18px 50px rgba(16, 35, 58, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Noto Sans SC", "PingFang SC", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(11, 110, 106, 0.12), transparent 36%),
+        radial-gradient(circle at top right, rgba(29, 79, 145, 0.10), transparent 30%),
+        linear-gradient(180deg, #e7eef4 0%, var(--bg) 48%, #e9f2f1 100%);
+      min-height: 100vh;
+    }
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 64px;
+    }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      margin: 8px 0 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+    .eyebrow, .sub, .muted, .meta, .loc {
+      color: var(--muted);
+    }
+    .eyebrow {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .stamp {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+      min-width: 220px;
+    }
+    .stamp strong { display: block; margin-top: 6px; font-size: 0.95rem; }
+    .shipment {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .shipment.missing { border-color: #e7c3b0; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 22px;
+    }
+    header h2 {
+      margin: 6px 0 4px;
+      font-size: 1.8rem;
+      letter-spacing: -0.03em;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .badge-ok { background: var(--ok-soft); color: var(--ok); }
+    .badge-info { background: var(--info-soft); color: var(--info); }
+    .badge-warn { background: var(--warn-soft); color: var(--warn); }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin: 0 0 28px;
+    }
+    .meta-grid div {
+      background: #f3f7fa;
+      border-radius: 16px;
+      padding: 12px 14px;
+    }
+    .meta-grid dt {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .meta-grid dd {
+      margin: 0;
+      font-weight: 600;
+      word-break: break-all;
+    }
+    .panels {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 24px;
+    }
+    h3 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+    }
+    .flow, .timeline {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .flow li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 12px;
+      position: relative;
+      padding-bottom: 16px;
+    }
+    .flow li::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 18px;
+      bottom: 0;
+      width: 2px;
+      background: var(--line);
+    }
+    .flow li:last-child { padding-bottom: 0; }
+    .flow li:last-child::before { display: none; }
+    .flow .dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      background: #fff;
+      margin-top: 4px;
+      z-index: 1;
+    }
+    .flow .reached .dot {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .flow .current .dot {
+      box-shadow: 0 0 0 5px var(--accent-soft);
+    }
+    .flow .connector .card {
+      background: transparent;
+      border: 0;
+      padding: 0 0 0 2px;
+      box-shadow: none;
+    }
+    .flow .connector .title {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .flow .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+    }
+    .flow .title { font-weight: 700; }
+    .flow .meta { margin-top: 4px; font-size: 0.82rem; }
+    .details {
+      list-style: none;
+      margin: 10px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 6px;
+    }
+    .details li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.82rem;
+      padding: 0;
+    }
+    .details li::before { display: none; }
+    .details span { color: var(--muted); }
+    .timeline li {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--line);
+    }
+    .timeline li:last-child { border-bottom: 0; }
+    .timeline .when {
+      font-variant-numeric: tabular-nums;
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+    .timeline .what {
+      display: grid;
+      gap: 4px;
+    }
+    .timeline .loc { font-size: 0.84rem; }
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    @media (max-width: 860px) {
+      .hero, header, .panels, .timeline li {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+      .hero, header { align-items: start; }
+      .stamp { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">永利通 · 八达通</p>
+        <h1>物流轨迹报告</h1>
+        <p class="muted">查询单号：1ZC23F680420753718</p>
+      </div>
+      <div class="stamp">
+        <span class="eyebrow">Generated</span>
+        <strong>2026-08-06 18:21:17 CST</strong>
+      </div>
+    </div>
+    
+    <section class="shipment">
+      <header>
+        <div>
+          <p class="eyebrow">Tracking Report</p>
+          <h2>BDT7603080SZ</h2>
+          <p class="sub">1ZC23F680420753718</p>
+        </div>
+        <span class="badge badge-ok">已签收</span>
+      </header>
+      <dl class="meta-grid"><div><dt>运单号</dt><dd>BDT7603080SZ</dd></div><div><dt>追踪号</dt><dd>1ZC23F680420753718</dd></div><div><dt>客户单号</dt><dd>287481</dd></div><div><dt>承运商</dt><dd>CNUPS</dd></div><div><dt>产品线</dt><dd>EXPRESS</dd></div><div><dt>始发</dt><dd>总部</dd></div><div><dt>目的地</dt><dd>澳大利亚</dd></div><div><dt>最新事件</dt><dd>已签收</dd></div><div><dt>最新时间</dt><dd>2026-08-05 10:40:00</dd></div><div><dt>签收日期</dt><dd>2026-08-05</dd></div><div><dt>状态天数</dt><dd>1</dd></div></dl>
+      <div class="panels">
+        <div>
+          <h3>流程节点</h3>
+          <ol class="flow">
+<li class="node reached"><div class="dot"></div><div class="card"><div class="title">已揽件</div><div class="meta">总部 · 2026-08-03 10:51</div></div></li>
+<li class="node reached"><div class="dot"></div><div class="card"><div class="title">入库</div><div class="meta">总部 · 2026-08-03 15:53</div><ul class="details"><li><span>入库单号</span><strong>6YOH-20260803A</strong></li><li><span>入库时间</span><strong>2026-08-03 15:53</strong></li></ul></div></li>
+<li class="connector reached"><div class="dot"></div><div class="card"><div class="title">操作</div><div class="meta">1小时</div></div></li>
+<li class="node reached"><div class="dot"></div><div class="card"><div class="title">出库</div><div class="meta">总部 · 2026-08-03 15:54</div><ul class="details"><li><span>出库单号</span><strong>88888-UPLHB01-V-20260803-A</strong></li><li><span>出库时间</span><strong>2026-08-03 15:54</strong></li></ul></div></li>
+<li class="connector reached"><div class="dot"></div><div class="card"><div class="title">交港</div><div class="meta">&nbsp;</div></div></li>
+<li class="node reached"><div class="dot"></div><div class="card"><div class="title">启邮</div><div class="meta">&nbsp;</div></div></li>
+<li class="connector reached"><div class="dot"></div><div class="card"><div class="title">出口国运输</div><div class="meta">&nbsp;</div></div></li>
+<li class="node reached"><div class="dot"></div><div class="card"><div class="title">目的国</div><div class="meta">&nbsp;</div></div></li>
+<li class="connector reached"><div class="dot"></div><div class="card"><div class="title">目的国运输</div><div class="meta">&nbsp;</div></div></li>
+<li class="node reached"><div class="dot"></div><div class="card"><div class="title">签收</div><div class="meta">澳大利亚 3036 · 2026-08-05 10:40</div><ul class="details"><li><span>签收时间</span><strong>2026-08-05 10:40</strong></li></ul></div></li>
+</ol>
+        </div>
+        <div>
+          <h3>轨迹明细</h3>
+          <ol class="timeline">
+<li><div class="when">2026-08-05 10:40:00</div><div class="what"><strong>已签收</strong><span class="loc">系统</span></div></li>
+<li><div class="when">2026-08-05 09:59:08</div><div class="what"><strong>Delivered, DELIVERED</strong><span class="loc">KEILOR, AU</span></div></li>
+<li><div class="when">2026-08-05 08:31:03</div><div class="what"><strong>Out for Delivery, Out For Delivery Today</strong><span class="loc">Melbourne, Australia</span></div></li>
+<li><div class="when">2026-08-05 03:01:27</div><div class="what"><strong>On the Way, Processing at UPS Facility</strong><span class="loc">Melbourne, Australia</span></div></li>
+<li><div class="when">2026-08-05 03:01:26</div><div class="what"><strong>Import Scan</strong><span class="loc">Melbourne, Australia</span></div></li>
+<li><div class="when">2026-08-04 15:00:00</div><div class="what"><strong>Departed from Facility</strong><span class="loc">Botany, Australia</span></div></li>
+<li><div class="when">2026-08-04 15:00:00</div><div class="what"><strong>On the Way, Departed from Facility</strong><span class="loc">Botany, Australia</span></div></li>
+<li><div class="when">2026-08-04 13:43:00</div><div class="what"><strong>On the Way, Arrived at Facility</strong><span class="loc">Botany, Australia</span></div></li>
+<li><div class="when">2026-08-04 13:43:00</div><div class="what"><strong>Arrived at Facility</strong><span class="loc">Botany, Australia</span></div></li>
+<li><div class="when">2026-08-04 13:23:31</div><div class="what"><strong>Your package is on the way</strong><span class="loc">*</span></div></li>
+<li><div class="when">2026-08-04 04:21:00</div><div class="what"><strong>On the Way, Departed from Facility</strong><span class="loc">Shenzhen, China</span></div></li>
+<li><div class="when">2026-08-04 04:21:00</div><div class="what"><strong>Departed from Facility</strong><span class="loc">Shenzhen, China</span></div></li>
+<li><div class="when">2026-08-04 00:19:51</div><div class="what"><strong>Export Scan</strong><span class="loc">Shenzhen, China</span></div></li>
+<li><div class="when">2026-08-04 00:19:51</div><div class="what"><strong>On the Way, Export Scan</strong><span class="loc">Shenzhen, China</span></div></li>
+<li><div class="when">2026-08-03 23:02:00</div><div class="what"><strong>Arrived at Facility</strong><span class="loc">Shenzhen, China</span></div></li>
+<li><div class="when">2026-08-03 22:32:00</div><div class="what"><strong>Departed from Facility</strong><span class="loc">Shenzhen, China</span></div></li>
+<li><div class="when">2026-08-03 20:12:01</div><div class="what"><strong>Arrived at Facility</strong><span class="loc">Shenzhen, China</span></div></li>
+<li><div class="when">2026-08-03 20:12:01</div><div class="what"><strong>On the Way, Arrived at Facility</strong><span class="loc">Shenzhen, China</span></div></li>
+<li><div class="when">2026-08-03 17:53:53</div><div class="what"><strong>We have your Package, Pickup Scan</strong><span class="loc">Shenzhen, China</span></div></li>
+<li><div class="when">2026-08-03 15:54:54</div><div class="what"><strong>已出库</strong><span class="loc">系统</span></div></li>
+<li><div class="when">2026-08-03 15:53:12</div><div class="what"><strong>已到达仓库【总部】</strong><span class="loc">系统</span></div></li>
+<li><div class="when">2026-08-03 10:51:53</div><div class="what"><strong>Label Created, Shipper created a label, UPS has not received the package yet.</strong><span class="loc">China</span></div></li>
+</ol>
+        </div>
+      </div>
+    </section>
+    
+    <footer>数据来源：八达通公开轨迹查询接口（8dt.com）。本报告由 bdt-tracking Skill 自动生成。</footer>
+  </div>
+</body>
+</html>

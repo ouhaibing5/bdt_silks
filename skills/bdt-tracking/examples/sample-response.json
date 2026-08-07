@@ -1,0 +1,316 @@
+{
+  "code": 200,
+  "data": {
+    "items": [
+      {
+        "queryNumber": "1ZC23F680420753718",
+        "found": true,
+        "id": "1ZC23F680420753718",
+        "orderId": "K9_BDT7603080SZ",
+        "number": "BDT7603080SZ",
+        "trackingNumber": "1ZC23F680420753718",
+        "transferNumber": null,
+        "customerOrderNo": "287481",
+        "carrier": "CNUPS",
+        "status": "delivered",
+        "nodeStatus": "SIGNED",
+        "nodeStatusName": "已签收",
+        "productLine": "EXPRESS",
+        "origin": "总部",
+        "destination": "澳大利亚",
+        "flowLayout": [
+          {
+            "type": "node",
+            "code": "LS",
+            "labelCn": "已揽件",
+            "labelEn": "Picked Up",
+            "reached": true,
+            "alwaysHighlight": true,
+            "current": false,
+            "subLabel": "总部",
+            "time": "2026-08-03 10:51",
+            "details": null
+          },
+          {
+            "type": "node",
+            "code": "LSRK",
+            "labelCn": "入库",
+            "labelEn": "Inbound",
+            "reached": true,
+            "alwaysHighlight": false,
+            "current": false,
+            "subLabel": "总部",
+            "time": "2026-08-03 15:53",
+            "details": {
+              "入库单号": "6YOH-20260803A",
+              "入库时间": "2026-08-03 15:53"
+            }
+          },
+          {
+            "type": "connector",
+            "code": "PACK",
+            "labelCn": "操作",
+            "labelEn": "操作",
+            "hours": "1小时",
+            "leftReached": true,
+            "rightReached": true,
+            "reached": true,
+            "current": false,
+            "connectorIcon": "package"
+          },
+          {
+            "type": "node",
+            "code": "S_ZY",
+            "labelCn": "出库",
+            "labelEn": "Outbound",
+            "reached": true,
+            "alwaysHighlight": false,
+            "current": false,
+            "subLabel": "总部",
+            "time": "2026-08-03 15:54",
+            "details": {
+              "出库单号": "88888-UPLHB01-V-20260803-A",
+              "出库时间": "2026-08-03 15:54"
+            }
+          },
+          {
+            "type": "connector",
+            "code": "PORT",
+            "labelCn": "交港",
+            "labelEn": "交港",
+            "hours": null,
+            "leftReached": true,
+            "rightReached": true,
+            "reached": true,
+            "current": false,
+            "connectorIcon": "check"
+          },
+          {
+            "type": "node",
+            "code": "BG",
+            "labelCn": "启邮",
+            "labelEn": "Departed",
+            "reached": true,
+            "alwaysHighlight": false,
+            "current": false,
+            "subLabel": null,
+            "time": null,
+            "details": null
+          },
+          {
+            "type": "connector",
+            "code": "GX_LINE",
+            "labelCn": "出口国运输",
+            "labelEn": "出口国运输",
+            "hours": null,
+            "leftReached": true,
+            "rightReached": true,
+            "reached": true,
+            "current": false,
+            "connectorIcon": "plane"
+          },
+          {
+            "type": "node",
+            "code": "GX_ARRIVAL",
+            "labelCn": "目的国",
+            "labelEn": "Arrival",
+            "reached": true,
+            "alwaysHighlight": false,
+            "current": false,
+            "subLabel": null,
+            "time": null,
+            "details": null
+          },
+          {
+            "type": "connector",
+            "code": "TH_LINE",
+            "labelCn": "目的国运输",
+            "labelEn": "目的国运输",
+            "hours": null,
+            "leftReached": true,
+            "rightReached": true,
+            "reached": true,
+            "current": false,
+            "connectorIcon": "customs"
+          },
+          {
+            "type": "node",
+            "code": "QS",
+            "labelCn": "签收",
+            "labelEn": "Delivered",
+            "reached": true,
+            "alwaysHighlight": false,
+            "current": false,
+            "subLabel": "澳大利亚 3036",
+            "time": "2026-08-05 10:40",
+            "details": {
+              "签收时间": "2026-08-05 10:40"
+            }
+          }
+        ],
+        "timeline": [
+          {
+            "time": "2026-08-05 10:40:00",
+            "location": "系统",
+            "eventCn": "已签收",
+            "eventEn": "已签收",
+            "nodeStatus": "SIGNED"
+          },
+          {
+            "time": "2026-08-05 09:59:08",
+            "location": "KEILOR, AU",
+            "eventCn": "Delivered, DELIVERED",
+            "eventEn": "Delivered, DELIVERED",
+            "nodeStatus": "SIGNED"
+          },
+          {
+            "time": "2026-08-05 08:31:03",
+            "location": "Melbourne, Australia",
+            "eventCn": "Out for Delivery, Out For Delivery Today",
+            "eventEn": "Out for Delivery, Out For Delivery Today",
+            "nodeStatus": "LAST_MILE_DELIVERY"
+          },
+          {
+            "time": "2026-08-05 03:01:27",
+            "location": "Melbourne, Australia",
+            "eventCn": "On the Way, Processing at UPS Facility",
+            "eventEn": "On the Way, Processing at UPS Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-05 03:01:26",
+            "location": "Melbourne, Australia",
+            "eventCn": "Import Scan",
+            "eventEn": "Import Scan",
+            "nodeStatus": "CUSTOMS_INSPECTION"
+          },
+          {
+            "time": "2026-08-04 15:00:00",
+            "location": "Botany, Australia",
+            "eventCn": "Departed from Facility",
+            "eventEn": "Departed from Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-04 15:00:00",
+            "location": "Botany, Australia",
+            "eventCn": "On the Way, Departed from Facility",
+            "eventEn": "On the Way, Departed from Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-04 13:43:00",
+            "location": "Botany, Australia",
+            "eventCn": "On the Way, Arrived at Facility",
+            "eventEn": "On the Way, Arrived at Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-04 13:43:00",
+            "location": "Botany, Australia",
+            "eventCn": "Arrived at Facility",
+            "eventEn": "Arrived at Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-04 13:23:31",
+            "location": "*",
+            "eventCn": "Your package is on the way",
+            "eventEn": "Your package is on the way",
+            "nodeStatus": null
+          },
+          {
+            "time": "2026-08-04 04:21:00",
+            "location": "Shenzhen, China",
+            "eventCn": "On the Way, Departed from Facility",
+            "eventEn": "On the Way, Departed from Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-04 04:21:00",
+            "location": "Shenzhen, China",
+            "eventCn": "Departed from Facility",
+            "eventEn": "Departed from Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-04 00:19:51",
+            "location": "Shenzhen, China",
+            "eventCn": "Export Scan",
+            "eventEn": "Export Scan",
+            "nodeStatus": null
+          },
+          {
+            "time": "2026-08-04 00:19:51",
+            "location": "Shenzhen, China",
+            "eventCn": "On the Way, Export Scan",
+            "eventEn": "On the Way, Export Scan",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-03 23:02:00",
+            "location": "Shenzhen, China",
+            "eventCn": "Arrived at Facility",
+            "eventEn": "Arrived at Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-03 22:32:00",
+            "location": "Shenzhen, China",
+            "eventCn": "Departed from Facility",
+            "eventEn": "Departed from Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-03 20:12:01",
+            "location": "Shenzhen, China",
+            "eventCn": "Arrived at Facility",
+            "eventEn": "Arrived at Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-03 20:12:01",
+            "location": "Shenzhen, China",
+            "eventCn": "On the Way, Arrived at Facility",
+            "eventEn": "On the Way, Arrived at Facility",
+            "nodeStatus": "IN_TRANSIT_TRANSFER"
+          },
+          {
+            "time": "2026-08-03 17:53:53",
+            "location": "Shenzhen, China",
+            "eventCn": "We have your Package, Pickup Scan",
+            "eventEn": "We have your Package, Pickup Scan",
+            "nodeStatus": "STARTED_DELIVERY"
+          },
+          {
+            "time": "2026-08-03 15:54:54",
+            "location": "系统",
+            "eventCn": "已出库",
+            "eventEn": "已出库",
+            "nodeStatus": null
+          },
+          {
+            "time": "2026-08-03 15:53:12",
+            "location": "系统",
+            "eventCn": "已到达仓库【总部】",
+            "eventEn": "已到达仓库【总部】",
+            "nodeStatus": null
+          },
+          {
+            "time": "2026-08-03 10:51:53",
+            "location": "China",
+            "eventCn": "Label Created, Shipper created a label, UPS has not received the package yet.",
+            "eventEn": "Label Created, Shipper created a label, UPS has not received the package yet.",
+            "nodeStatus": null
+          }
+        ],
+        "latestTime": "2026-08-05 10:40:00",
+        "latestEventCn": "已签收",
+        "latestEventEn": "已签收",
+        "signDate": "2026-08-05",
+        "statusDays": 1
+      }
+    ]
+  },
+  "message": "success"
+}

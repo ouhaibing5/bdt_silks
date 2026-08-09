@@ -1,12 +1,12 @@
 {
-  "name": "@dingjian/customer-mcp",
-  "version": "0.2.1",
+  "name": "@ouhaibing/customer-mcp",
+  "version": "0.2.2",
   "description": "Yonglitong Badatong (八达通) ERP customer MCP server — list/followup/accounts/freight/follow notes",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "bdt-customer-mcp": "./bin/cli.mjs",
-    "customer-mcp": "./bin/cli.mjs"
+    "bdt-customer-mcp": "bin/cli.mjs",
+    "customer-mcp": "bin/cli.mjs"
   },
   "files": [
     "bin",
@@ -25,7 +25,7 @@
     "8dt",
     "crm",
     "cursor",
-    "dingjian"
+    "ouhaibing"
   ],
   "repository": {
     "type": "git",

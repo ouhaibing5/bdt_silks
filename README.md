@@ -51,7 +51,7 @@ npx skills add <owner>/bdt_silks --skill bdt-tracking -g -y
   "mcpServers": {
     "bdt-customer": {
       "command": "npx",
-      "args": ["-y", "@dingjian/customer-mcp@latest"],
+      "args": ["-y", "@ouhaibing/customer-mcp@latest"],
       "env": {
         "BDT_ERP_BASE_URL": "https://erptestdev.8dt.com/supply/",
         "BDT_ERP_SECRET": "...",
@@ -71,4 +71,4 @@ npx skills add <owner>/bdt_silks --skill bdt-tracking -g -y
 npx -y /path/to/bdt_silks/mcp/bdt-customer
 ```
 
-若宿主侧「安装 / 更新 / 获取工具」失败：先确认 `npm view @dingjian/customer-mcp` 能查到版本；再确认 `mcp.json` 已配置 `BDT_ERP_*`。详情见 [mcp/bdt-customer/README.md](mcp/bdt-customer/README.md)。
+若宿主侧「安装 / 更新 / 获取工具」失败：先确认 `npm view @ouhaibing/customer-mcp` 能查到版本；再确认 `mcp.json` 已配置 `BDT_ERP_*`。详情见 [mcp/bdt-customer/README.md](mcp/bdt-customer/README.md)。

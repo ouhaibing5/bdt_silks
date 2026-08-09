@@ -3,7 +3,7 @@
  * npx launcher for the Python MCP server.
  *
  * Usage:
- *   npx -y @dingjian/customer-mcp
+ *   npx -y @ouhaibing/customer-mcp
  *   npx -y /absolute/path/to/mcp/bdt-customer
  *
  * IMPORTANT: MCP speaks JSON-RPC over stdout. Never write logs to stdout.
@@ -18,7 +18,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
-const PACKAGE_NAME = "@dingjian/customer-mcp";
+const PACKAGE_NAME = "@ouhaibing/customer-mcp";
 
 function readPackageVersion() {
   try {

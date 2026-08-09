@@ -1,5 +1,5 @@
 {
-  "name": "@ouhaibing/customer-mcp",
+  "name": "@dingjian168/customer-mcp",
   "version": "0.2.2",
   "description": "Yonglitong Badatong (八达通) ERP customer MCP server — list/followup/accounts/freight/follow notes",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "8dt",
     "crm",
     "cursor",
-    "ouhaibing"
+    "dingjian168"
   ],
   "repository": {
     "type": "git",

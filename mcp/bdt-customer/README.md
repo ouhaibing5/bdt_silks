@@ -2,7 +2,7 @@
 
 基于第三方签名鉴权，查询永利通八达通 ERP 客户信息、结算账户、货量趋势与跟进记录。
 
-支持通过 **`npx @ouhaibing/customer-mcp`** 一键启动（Node 启动器 + Python FastMCP 实现）。
+支持通过 **`npx @dingjian168/customer-mcp`** 一键启动（Node 启动器 + Python FastMCP 实现）。
 
 ## 架构说明
 
@@ -36,7 +36,7 @@ Cursor / Claude Desktop 通过 `command + args` 拉起进程，走 **stdin/stdou
 ### 发布到 npm 后
 
 ```bash
-npx -y @ouhaibing/customer-mcp@latest
+npx -y @dingjian168/customer-mcp@latest
 ```
 
 Cursor `mcp.json`：
@@ -46,7 +46,7 @@ Cursor `mcp.json`：
   "mcpServers": {
     "bdt-customer": {
       "command": "npx",
-      "args": ["-y", "@ouhaibing/customer-mcp@latest"],
+      "args": ["-y", "@dingjian168/customer-mcp@latest"],
       "env": {
         "BDT_ERP_BASE_URL": "https://erptestdev.8dt.com/supply/",
         "BDT_ERP_SECRET": "your-secret",
@@ -60,7 +60,7 @@ Cursor `mcp.json`：
 }
 ```
 
-> 当前 npm 包名：`@ouhaibing/customer-mcp`。若 `npm view @ouhaibing/customer-mcp` 返回 404，说明尚未成功 publish，或 scope/包名不一致，宿主侧「安装/更新」也会失败。
+> 当前 npm 包名：`@dingjian168/customer-mcp`。若 `npm view @dingjian168/customer-mcp` 返回 404，说明尚未成功 publish，或 scope/包名不一致，宿主侧「安装/更新」也会失败。
 
 ### 本地未发布时
 
@@ -91,15 +91,15 @@ npx -y /absolute/path/to/bdt_silks/mcp/bdt-customer
 ```bash
 cd mcp/bdt-customer
 npm pack --dry-run
-npm view @ouhaibing/customer-mcp version   # 若 404 说明从未发布成功
+npm view @dingjian168/customer-mcp version   # 若 404 说明从未发布成功
 npm login --registry https://registry.npmjs.org/
 npm publish --access public
-npm view @ouhaibing/customer-mcp version   # 应看到新版本
+npm view @dingjian168/customer-mcp version   # 应看到新版本
 ```
 
 注意：
 
-1. npm scope `@ouhaibing` 需要你对应该组织/用户有 publish 权限。
+1. npm scope `@dingjian168` 需要你对应该组织/用户有 publish 权限。
 2. 发布后用 `@latest` 或显式版本，避免客户端命中旧缓存。
 3. 仓库地址与 npm `repository` 字段应指向实际 GitHub 仓库。
 
@@ -115,7 +115,7 @@ npm view @ouhaibing/customer-mcp version   # 应看到新版本
 调试启动器：
 
 ```bash
-npx -y @ouhaibing/customer-mcp --version
+npx -y @dingjian168/customer-mcp --version
 # 或本地
 node ./bin/cli.mjs --version
 ```

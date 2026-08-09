@@ -1,9 +1,10 @@
 .venv/
 .npx-venv/
 .env
-__pycache__/
-**/__pycache__/
-*.py[cod]
+**/__pycache__/**
+**/*.pyc
+**/*.pyo
+**/*.pyd
 *.egg-info/
 .pytest_cache/
 .mypy_cache/
@@ -11,3 +12,8 @@ __pycache__/
 node_modules/
 .DS_Store
 *.tgz
+tests/
+uv.lock
+.python-version
+.coverage
+htmlcov/

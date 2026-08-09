@@ -16,14 +16,39 @@ bdt_silks/
 
 后续新 Skill 放在 `skills/<skill-name>/`；新 MCP 放在 `mcp/<service-name>/`。
 
+**完整安装配置说明（Skills + MCP，含 WorkBuddy 等平台）：**  
+👉 [docs/INSTALL.md](docs/INSTALL.md)
+
 ## Skills
 
-### 安装
+Skills 通过开源 CLI [`npx skills`](https://github.com/vercel-labs/skills) 安装（不是 npm 包）。  
+本仓库已按标准布局放置：`skills/<name>/SKILL.md`（含 YAML frontmatter 的 `name` / `description`）。  
+仓库已 **Public**，可直接命令安装。
+
+### 一条命令安装
 
 ```bash
-npx skills add <owner>/bdt_silks -g -y
-npx skills add <owner>/bdt_silks --skill bdt-crm -g -y
-npx skills add <owner>/bdt_silks --skill bdt-tracking -g -y
+# 先看仓库里有哪些 skill
+npx skills add ouhaibing5/bdt_silks --list
+
+# 安装全部（全局，跳过确认）
+npx skills add ouhaibing5/bdt_silks -g -y
+
+# 只装某一个
+npx skills add ouhaibing5/bdt_silks --skill bdt-crm -g -y
+npx skills add ouhaibing5/bdt_silks --skill bdt-tracking -g -y
+
+# 指定平台：Cursor / WorkBuddy(CodeBuddy)
+npx skills add ouhaibing5/bdt_silks -g -y -a cursor
+npx skills add ouhaibing5/bdt_silks -g -y -a codebuddy
+```
+
+本地未推送到 GitHub 时：
+
+```bash
+npx skills add /absolute/path/to/bdt_silks -g -y
+# 或
+npx skills add ./skills --skill bdt-tracking -g -y
 ```
 
 ### bdt-tracking
@@ -37,7 +62,6 @@ npx skills add <owner>/bdt_silks --skill bdt-tracking -g -y
 跨境物流销售助手：内置 SOP，配合 MCP 生成多维跟进清单、单客深挖、写跟进记录。
 
 详情见 [skills/bdt-crm/SKILL.md](skills/bdt-crm/SKILL.md)、[skills/bdt-crm/sop.md](skills/bdt-crm/sop.md)。
-
 ## MCP Servers
 
 ### bdt-customer
@@ -51,7 +75,7 @@ npx skills add <owner>/bdt_silks --skill bdt-tracking -g -y
   "mcpServers": {
     "bdt-customer": {
       "command": "npx",
-      "args": ["-y", "@dingjian/customer-mcp"],
+      "args": ["-y", "@dingjian168/customer-mcp@latest"],
       "env": {
         "BDT_ERP_BASE_URL": "https://erptestdev.8dt.com/supply/",
         "BDT_ERP_SECRET": "...",
@@ -71,4 +95,4 @@ npx skills add <owner>/bdt_silks --skill bdt-tracking -g -y
 npx -y /path/to/bdt_silks/mcp/bdt-customer
 ```
 
-详情见 [mcp/bdt-customer/README.md](mcp/bdt-customer/README.md)。
+若宿主侧「安装 / 更新 / 获取工具」失败：先确认 `npm view @dingjian168/customer-mcp` 能查到版本；再确认 `mcp.json` 已配置 `BDT_ERP_*`。详情见 [mcp/bdt-customer/README.md](mcp/bdt-customer/README.md)。

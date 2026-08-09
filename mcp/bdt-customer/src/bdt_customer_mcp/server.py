@@ -30,7 +30,12 @@ mcp = FastMCP(
 
 
 def _client() -> ErpClient:
-    return ErpClient(get_settings())
+    """构造 ERP 客户端；凭证缺失时抛出可读错误（供 tools/call 返回）。"""
+    try:
+        return ErpClient(get_settings())
+    except ValueError as exc:
+        # 统一成 RuntimeError，避免被部分宿主当成协议层故障
+        raise RuntimeError(str(exc)) from exc
 
 
 def _dump(model: Any) -> str:
@@ -588,8 +593,16 @@ def save_customer_follow(
 
 
 def main() -> None:
-    # 启动前校验配置，避免工具调用时才暴露缺凭证
-    get_settings().validate_credentials()
+    # 注意：不要在启动阶段因缺凭证直接退出。
+    # Cursor / MCP Host 会先发 initialize + tools/list；若进程在握手前崩溃，
+    # 宿主会表现为「安装/更新失败」或「获取不到工具」。
+    # 凭证校验保留在 ErpClient 构造时（真正调用工具时），错误会以工具返回值暴露。
+    try:
+        get_settings().validate_credentials()
+    except ValueError as exc:
+        import sys
+
+        print(f"[bdt-customer-mcp] warning: {exc}", file=sys.stderr)
     mcp.run(transport="stdio")
 
 

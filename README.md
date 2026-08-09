@@ -18,13 +18,42 @@ bdt_silks/
 
 ## Skills
 
-### 安装
+Skills 通过开源 CLI [`npx skills`](https://github.com/vercel-labs/skills) 安装（不是 npm 包）。  
+本仓库已按标准布局放置：`skills/<name>/SKILL.md`（含 YAML frontmatter 的 `name` / `description`）。
+
+### 一条命令安装
 
 ```bash
-npx skills add <owner>/bdt_silks -g -y
-npx skills add <owner>/bdt_silks --skill bdt-crm -g -y
-npx skills add <owner>/bdt_silks --skill bdt-tracking -g -y
+# 先看仓库里有哪些 skill
+npx skills add ouhaibing5/bdt_silks --list
+
+# 安装全部（全局，跳过确认）
+npx skills add ouhaibing5/bdt_silks -g -y
+
+# 只装某一个
+npx skills add ouhaibing5/bdt_silks --skill bdt-crm -g -y
+npx skills add ouhaibing5/bdt_silks --skill bdt-tracking -g -y
+
+# 指定给 Cursor
+npx skills add ouhaibing5/bdt_silks -g -y -a cursor
 ```
+
+本地未推送到 GitHub 时：
+
+```bash
+npx skills add /absolute/path/to/bdt_silks -g -y
+# 或
+npx skills add ./skills --skill bdt-tracking -g -y
+```
+
+### 让别人也能一条命令安装（关键）
+
+当前仓库是 **private**。别人要装成功，任选其一：
+
+1. **推荐**：把 GitHub 仓库设为 **Public** → 任何人可直接 `npx skills add ouhaibing5/bdt_silks -g -y`
+2. 保持私有：安装者本机需已登录 Git（`gh auth login` / SSH key / `GH_TOKEN`），CLI 才会 clone 得到 skills
+
+合并到 `main` 后，安装源默认读默认分支上的 `skills/`。
 
 ### bdt-tracking
 
@@ -37,7 +66,6 @@ npx skills add <owner>/bdt_silks --skill bdt-tracking -g -y
 跨境物流销售助手：内置 SOP，配合 MCP 生成多维跟进清单、单客深挖、写跟进记录。
 
 详情见 [skills/bdt-crm/SKILL.md](skills/bdt-crm/SKILL.md)、[skills/bdt-crm/sop.md](skills/bdt-crm/sop.md)。
-
 ## MCP Servers
 
 ### bdt-customer

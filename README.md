@@ -16,10 +16,14 @@ bdt_silks/
 
 后续新 Skill 放在 `skills/<skill-name>/`；新 MCP 放在 `mcp/<service-name>/`。
 
+**完整安装配置说明（Skills + MCP，含 WorkBuddy 等平台）：**  
+👉 [docs/INSTALL.md](docs/INSTALL.md)
+
 ## Skills
 
 Skills 通过开源 CLI [`npx skills`](https://github.com/vercel-labs/skills) 安装（不是 npm 包）。  
-本仓库已按标准布局放置：`skills/<name>/SKILL.md`（含 YAML frontmatter 的 `name` / `description`）。
+本仓库已按标准布局放置：`skills/<name>/SKILL.md`（含 YAML frontmatter 的 `name` / `description`）。  
+仓库已 **Public**，可直接命令安装。
 
 ### 一条命令安装
 
@@ -34,8 +38,9 @@ npx skills add ouhaibing5/bdt_silks -g -y
 npx skills add ouhaibing5/bdt_silks --skill bdt-crm -g -y
 npx skills add ouhaibing5/bdt_silks --skill bdt-tracking -g -y
 
-# 指定给 Cursor
+# 指定平台：Cursor / WorkBuddy(CodeBuddy)
 npx skills add ouhaibing5/bdt_silks -g -y -a cursor
+npx skills add ouhaibing5/bdt_silks -g -y -a codebuddy
 ```
 
 本地未推送到 GitHub 时：
@@ -45,15 +50,6 @@ npx skills add /absolute/path/to/bdt_silks -g -y
 # 或
 npx skills add ./skills --skill bdt-tracking -g -y
 ```
-
-### 让别人也能一条命令安装（关键）
-
-当前仓库是 **private**。别人要装成功，任选其一：
-
-1. **推荐**：把 GitHub 仓库设为 **Public** → 任何人可直接 `npx skills add ouhaibing5/bdt_silks -g -y`
-2. 保持私有：安装者本机需已登录 Git（`gh auth login` / SSH key / `GH_TOKEN`），CLI 才会 clone 得到 skills
-
-合并到 `main` 后，安装源默认读默认分支上的 `skills/`。
 
 ### bdt-tracking
 

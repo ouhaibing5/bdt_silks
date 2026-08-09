@@ -1,6 +1,6 @@
 [project]
 name = "bdt-customer-mcp"
-version = "0.2.0"
+version = "0.2.1"
 description = "MCP server for Yonglitong Badatong (八达通) customer and settlement account queries"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -22,11 +22,21 @@ bdt-customer-mcp = "bdt_customer_mcp.server:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+# src layout：把 src/bdt_customer_mcp 打成顶层包 bdt_customer_mcp
 [tool.hatch.build.targets.wheel]
 packages = ["src/bdt_customer_mcp"]
 
 [tool.hatch.build.targets.wheel.sources]
 "src/bdt_customer_mcp" = "bdt_customer_mcp"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  ".venv",
+  ".npx-venv",
+  ".pytest_cache",
+  "__pycache__",
+  "*.egg-info",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

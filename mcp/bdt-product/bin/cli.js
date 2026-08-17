@@ -3,7 +3,7 @@
  * npx launcher for the Python MCP server.
  *
  * Usage:
- *   npx -y @ouhaibing/product-mcp
+ *   npx -y @ouhaibing/bdt-product-mcp
  *   npx -y /absolute/path/to/mcp/bdt-product
  */
 import { spawn, spawnSync } from "node:child_process";

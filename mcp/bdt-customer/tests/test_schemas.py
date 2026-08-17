@@ -72,3 +72,32 @@ def test_summarize_freight_trend_totals() -> None:
     assert summary.total_package_count == 7
     assert abs(summary.total_actual_weight - 98.9) < 0.001
     assert summary.total_revenue == 15
+
+
+def test_summarize_analysis_item_maps_revenue_rank() -> None:
+    from bdt_customer_mcp.schemas import summarize_analysis_item
+
+    item = summarize_analysis_item(
+        {
+            "dealCustomerId": "K9_CJ2118",
+            "customerNumber": "CJ2118",
+            "customerName": "星途运",
+            "customerType": "PEER",
+            "customerTypeName": "同行",
+            "orgName": "销售二组",
+            "salesPersonId": "1265",
+            "salesPersonName": "何玉林",
+            "orders": 1,
+            "weight": 3080,
+            "volume": 14.572,
+            "revenue": 160510,
+            "lastOrderDate": "2026-08-03",
+            "prevRevenue": 0,
+        },
+        rank=1,
+    )
+    data = item.model_dump(by_alias=True)
+    assert data["rank"] == 1
+    assert data["customerNumber"] == "CJ2118"
+    assert data["revenue"] == 160510
+    assert data["salesPersonName"] == "何玉林"

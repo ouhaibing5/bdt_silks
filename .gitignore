@@ -12,3 +12,6 @@ mcp/**/.env
 # Local archives / scratch
 SKilss.zip
 curl.md
+
+# Editor / local MCP config
+.cursor/

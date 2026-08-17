@@ -2,7 +2,7 @@
 
 基于第三方签名鉴权，查询永利通八达通 ERP 客户信息、结算账户、货量趋势与跟进记录。
 
-支持通过 **`npx @dingjian/customer-mcp`** 一键启动（Node 启动器 + Python MCP 实现）。
+支持通过 **`npx @ouhaibing/customer-mcp`** 一键启动（Node 启动器 + Python MCP 实现）。
 
 ## 功能
 
@@ -14,6 +14,7 @@
 | `get_customer_accounts` | 按编号或客户 ID 查各业务结算账户 / 余额 |
 | `get_customer_overview` | 一次返回客户摘要 + 结算账户 |
 | `get_customer_freight_trend` | 按日期区间查客户货量/出库趋势 |
+| `get_customer_order_analysis` | 客户下单分析（票数/重量/体积/总业绩）；`sortName=revenue` 按总业绩排名 |
 | `save_customer_follow` | 给客户写跟进记录 |
 
 ## 快速开始（npx）
@@ -23,7 +24,7 @@
 ### 发布到 npm 后
 
 ```bash
-npx -y @dingjian/customer-mcp
+npx -y @ouhaibing/customer-mcp
 ```
 
 Cursor `mcp.json`：
@@ -33,7 +34,7 @@ Cursor `mcp.json`：
   "mcpServers": {
     "bdt-customer": {
       "command": "npx",
-      "args": ["-y", "@dingjian/customer-mcp"],
+      "args": ["-y", "@ouhaibing/customer-mcp"],
       "env": {
         "BDT_ERP_BASE_URL": "https://erptestdev.8dt.com/supply/",
         "BDT_ERP_SECRET": "your-secret",
@@ -47,7 +48,7 @@ Cursor `mcp.json`：
 }
 ```
 
-> 当前 npm 包名：`@dingjian/customer-mcp`。
+> 当前 npm 包名：`@ouhaibing/customer-mcp`。
 
 ### 本地未发布时
 
@@ -79,7 +80,7 @@ npm publish --access public
 发布后用户即可：
 
 ```bash
-npx -y @dingjian/customer-mcp
+npx -y @ouhaibing/customer-mcp
 ```
 
 ## 本地开发（Python）

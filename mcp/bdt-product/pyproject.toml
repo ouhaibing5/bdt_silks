@@ -1,0 +1,33 @@
+[project]
+name = "bdt-product-mcp"
+version = "0.1.0"
+description = "MCP server for Yonglitong Badatong (八达通) logistics product pricing and customer quotes"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "httpx>=0.27.0",
+  "mcp>=1.2.0,<2",
+  "pydantic>=2.0",
+  "pydantic-settings>=2.0",
+  "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+bdt-product-mcp = "bdt_product_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bdt_product_mcp"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/bdt_product_mcp" = "bdt_product_mcp"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

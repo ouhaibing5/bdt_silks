@@ -8,7 +8,7 @@
 |------|------|------|
 | 开班 15 分钟 | 生成今日跟进清单 | `build_followup_list` |
 | 上午 | 处理风险 + 今日必跟 | 电话/微信 + `save_customer_follow` |
-| 下午 | 沉默唤醒 + 交叉销售 | 单客深挖（限量） |
+| 下午 | 沉默唤醒 + 交叉销售 + 报价 | `bdt-product` 查价/导出 + 单客深挖（限量） |
 | 收工 10 分钟 | 回写跟进、约定次日 Top5 | `save_customer_follow` |
 
 ## 2. 客户分层（与打分桶对齐）
@@ -38,7 +38,8 @@
 
 ### 3.3 交叉销售（快递 ↔ 专线 ↔ FBA）
 
-确认货型、目的国、时效敏感度、单票重量段后，给「现行方案 vs 推荐方案」对比，避免无依据推销。
+确认货型、目的国、时效敏感度、单票重量段后，给「现行方案 vs 推荐方案」对比，避免无依据推销。  
+需要价卡时走 **§7 报价流程**，用 Excel 链接交付，不口头报整张表。
 
 ### 3.4 未下单/开户后沉默
 
@@ -52,7 +53,7 @@
 【方式】电话/微信｜【结果】接通/未接/已加微信
 【现状】末单日期/近期货量/账期情况
 【诉求】目的国、渠道、时效、价格敏感点
-【动作】已报价XX / 待补资料 / 约试发
+【动作】已报价XX（产品编号）/ 已发价格表链接 / 待补资料 / 约试发
 【下次】YYYY-MM-DD 跟进点
 ```
 
@@ -64,6 +65,8 @@
 2. 货量趋势只对用户点名或 Top≤10  
 3. `enrich_top_n` 默认 0；需要余额时再开 5~10  
 4. 禁止全量客户循环详情接口  
+5. 客户产品列表先用 `key_word` 过滤；导出条数建议 ≤20  
+6. 价格明细 `max_weight_bands` 默认 40，对话里只摘要关键重量段  
 
 ## 6. 验收标准（一次好的销售助手输出）
 
@@ -72,3 +75,37 @@
 - [ ] 每条有得分原因 + 可执行建议  
 - [ ] 深挖请求可控  
 - [ ] 写跟进前有用户确认  
+- [ ] 涉及报价时有产品编号/截止日/下载链接（如有导出）  
+
+## 7. 报价与价格表交付（bdt-product）
+
+### 7.1 产品线
+
+| 值 | 含义 |
+|----|------|
+| `EXPRESS` | 国际快递 |
+| `SPECIAL_LINE` | 小包专线 |
+
+### 7.2 指导价（对内对照 / 对外发公开价）
+
+1. `search_product_prices(key_word, product_line)`  
+2. 需要明细 → `get_product_price_detail(quote_time_id, supplyProductId)`  
+3. 需要 Excel → `export_product_prices(quote_time_ids=...)`  
+4. 把 `downloadUrl` 交给用户（浏览器可下）
+
+### 7.3 客户报价（按客户开通产品）
+
+1. `get_customer_by_number` → `customer_id`  
+2. `list_customer_product_quotes(customer_id, product_line, key_word?)`  
+3. 确认条目有 `quoteTimeId`  
+4. `export_customer_product_quotes(customer_id, quote_time_ids=...)`  
+   或 `product_numbers="A,B"`  
+5. 交付 `downloadUrl`，并询问是否写入跟进
+
+### 7.4 常见失败与处理
+
+| 现象 | 处理 |
+|------|------|
+| 查不到产品 | 换编号/名称；确认 product_line |
+| 客户列表无 quoteTimeId | 说明暂无生效报价时段，改查指导价或转产品同事 |
+| 导出成功但链接打不开 | 核对 `BDT_ERP_OSS_BASE_URL` / cu_id；把 relativePath 一并告知用户 |

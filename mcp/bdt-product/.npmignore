@@ -1,0 +1,13 @@
+.venv/
+.npx-venv/
+.env
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+.DS_Store
+*.tgz

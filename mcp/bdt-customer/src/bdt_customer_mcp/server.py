@@ -12,9 +12,11 @@ from bdt_customer_mcp.erp_client import ErpClient, get_settings
 from bdt_customer_mcp.followup import group_followup_items, score_customer_for_followup
 from bdt_customer_mcp.schemas import (
     CustomerAccountsResult,
+    CustomerAnalysisResult,
     CustomerOverview,
     FreightTrendResult,
     summarize_account,
+    summarize_analysis_item,
     summarize_customer,
     summarize_freight_trend,
 )
@@ -22,9 +24,10 @@ from bdt_customer_mcp.schemas import (
 mcp = FastMCP(
     "bdt-customer",
     instructions=(
-        "查询永利通八达通 ERP 客户信息、结算账户余额、货量趋势；"
+        "查询永利通八达通 ERP 客户信息、结算账户余额、货量趋势、下单分析；"
         "支持拉取私海客户列表、生成多维跟进清单，以及写跟进记录。"
         "优先使用客户编号（如 DSKJ）。跟进清单默认只基于列表字段打分，不批量拉货量。"
+        "下单分析按总业绩排名时传 sortName=revenue。"
     ),
 )
 
@@ -483,6 +486,134 @@ def get_customer_freight_trend(
     payload_out["queriedDealCustomerIds"] = query_ids
     payload_out["hitDealCustomerIds"] = used_ids
     return _dump({"found": True, **payload_out})
+
+
+_ANALYSIS_SORT_FIELDS = frozenset(
+    {"orders", "revenue", "weight", "volume", "lastOrderDate", "customerNumber", "customerName"}
+)
+
+
+@mcp.tool()
+def get_customer_order_analysis(
+    start_date: str,
+    end_date: str,
+    date_type: str = "month",
+    summary_type: str = "in",
+    sort_name: str = "revenue",
+    sort_order: str = "",
+    sales_person_id: str = "",
+    belong_org_long_number: str = "",
+    key_word: str = "",
+    product_line: str = "",
+    product_id: str = "",
+    current_page: int = 1,
+    page_size: int = 100,
+) -> str:
+    """查询客户下单分析（票数/计费重/体积/总业绩），对应页面「客户下单分析」。
+
+    默认按总业绩（revenue）降序排名；也可按 orders / weight / volume 排序。
+
+    Args:
+        start_date: 开始日期 YYYY-MM-DD
+        end_date: 结束日期 YYYY-MM-DD
+        date_type: 日期粒度，默认 month（也可 day / week）
+        summary_type: 汇总口径，默认 in（入库）
+        sort_name: 排序字段。revenue=总业绩（默认），orders=票数，weight=计费重，volume=体积
+        sort_order: asc / desc；空则 revenue 默认 desc，其余默认 desc
+        sales_person_id: 销售员 ID；默认使用配置 BDT_ERP_USER_ID
+        belong_org_long_number: 所属组织长编码（可选，如 ylbdt1!0234!0304!0315）
+        key_word: 客户编号/名称关键字（可选）
+        product_line: 产品线（可选）
+        product_id: 产品 ID（可选）
+        current_page: 页码，从 1 起
+        page_size: 每页条数，默认 100
+    """
+    start = start_date.strip()
+    end = end_date.strip()
+    if not start or not end:
+        return _dump({"found": False, "message": "请提供 startDate 与 endDate（YYYY-MM-DD）"})
+
+    sort_field = (sort_name or "revenue").strip() or "revenue"
+    if sort_field not in _ANALYSIS_SORT_FIELDS:
+        return _dump(
+            {
+                "found": False,
+                "message": (
+                    f"不支持的 sortName={sort_field}，"
+                    f"可选：{', '.join(sorted(_ANALYSIS_SORT_FIELDS))}"
+                ),
+            }
+        )
+
+    order = (sort_order or "").strip().lower()
+    if order not in {"", "asc", "desc"}:
+        return _dump({"found": False, "message": "sortOrder 仅支持 asc / desc"})
+    if not order:
+        order = "desc"
+
+    page = max(1, int(current_page or 1))
+    size = max(1, min(int(page_size or 100), 500))
+
+    settings = get_settings()
+    sales_id = (sales_person_id or "").strip() or settings.user_id
+    org_long = belong_org_long_number.strip()
+    keyword = key_word.strip()
+
+    client = _client()
+    try:
+        payload = client.get_customer_analysis_data(
+            start_date=start,
+            end_date=end,
+            date_type=(date_type or "month").strip() or "month",
+            summary_type=(summary_type or "in").strip() or "in",
+            sales_person_id=sales_id,
+            belong_org_long_number=org_long,
+            key_word=keyword,
+            product_line=product_line.strip(),
+            product_id=product_id.strip(),
+            current_page=page,
+            page_size=size,
+            sort_name=sort_field,
+            sort_order=order,
+        )
+    except Exception as exc:  # noqa: BLE001
+        return _dump({"found": False, "message": str(exc)})
+
+    result_type = payload.get("resultType")
+    if result_type not in (1, "1", True, None):
+        return _dump(
+            {
+                "found": False,
+                "resultType": result_type,
+                "resultMsg": payload.get("resultMsg"),
+                "requestId": payload.get("requestId"),
+            }
+        )
+
+    items_raw = _extract_items(payload)
+    offset = (page - 1) * size
+    items = [
+        summarize_analysis_item(item, rank=offset + idx + 1)
+        for idx, item in enumerate(items_raw)
+    ]
+    meta = _page_meta(payload)
+    result = CustomerAnalysisResult(
+        startDate=start,
+        endDate=end,
+        dateType=(date_type or "month").strip() or "month",
+        summaryType=(summary_type or "in").strip() or "in",
+        sortName=sort_field,
+        sortOrder=order,
+        salesPersonId=sales_id or None,
+        belongOrgLongNumber=org_long or None,
+        keyWord=keyword or None,
+        currentPage=meta.get("currentPage") or page,
+        pageCount=meta.get("pageCount"),
+        pageSize=meta.get("pageSize") or size,
+        recordCount=meta.get("recordCount"),
+        items=items,
+    )
+    return _dump({"found": True, **result.model_dump(by_alias=True, exclude_none=True)})
 
 
 @mcp.tool()

@@ -3,8 +3,8 @@
  * npx launcher for the Python MCP server.
  *
  * Usage:
- *   npx -y @ouhaibing/customer-mcp
- *   npx -y /absolute/path/to/mcp/bdt-customer
+ *   npx -y @ouhaibing/product-mcp
+ *   npx -y /absolute/path/to/mcp/bdt-product
  */
 import { spawn, spawnSync } from "node:child_process";
 import fs from "node:fs";
@@ -45,7 +45,7 @@ function run(command, args, opts = {}) {
       shell: opts.shell === true,
     });
     child.on("error", (err) => {
-      console.error(`[bdt-customer-mcp] failed to start ${command}: ${err.message}`);
+      console.error(`[bdt-product-mcp] failed to start ${command}: ${err.message}`);
       resolve(1);
     });
     child.on("exit", (code, signal) => {
@@ -72,7 +72,7 @@ async function ensurePythonEnvWithUv(uvPath) {
     { encoding: "utf8", env: process.env },
   );
   if (sync.status !== 0) {
-    console.error(sync.stderr || sync.stdout || "[bdt-customer-mcp] uv sync failed");
+    console.error(sync.stderr || sync.stdout || "[bdt-product-mcp] uv sync failed");
     return false;
   }
   return true;
@@ -86,8 +86,8 @@ async function ensurePythonEnvWithPip(pythonBin) {
       : path.join(marker, "bin", "python");
   const entry =
     process.platform === "win32"
-      ? path.join(marker, "Scripts", "bdt-customer-mcp.exe")
-      : path.join(marker, "bin", "bdt-customer-mcp");
+      ? path.join(marker, "Scripts", "bdt-product-mcp.exe")
+      : path.join(marker, "bin", "bdt-product-mcp");
 
   if (!exists(entry)) {
     const venv = spawnSync(pythonBin, ["-m", "venv", marker], {
@@ -95,7 +95,7 @@ async function ensurePythonEnvWithPip(pythonBin) {
       env: process.env,
     });
     if (venv.status !== 0) {
-      console.error(venv.stderr || "[bdt-customer-mcp] python -m venv failed");
+      console.error(venv.stderr || "[bdt-product-mcp] python -m venv failed");
       return null;
     }
     const pipInstall = spawnSync(
@@ -104,7 +104,7 @@ async function ensurePythonEnvWithPip(pythonBin) {
       { encoding: "utf8", env: process.env },
     );
     if (pipInstall.status !== 0) {
-      console.error(pipInstall.stderr || "[bdt-customer-mcp] pip install failed");
+      console.error(pipInstall.stderr || "[bdt-product-mcp] pip install failed");
       return null;
     }
   }
@@ -113,10 +113,10 @@ async function ensurePythonEnvWithPip(pythonBin) {
 
 function resolveLocalVenvEntry() {
   const candidates = [
-    path.join(ROOT, ".venv", "bin", "bdt-customer-mcp"),
-    path.join(ROOT, ".venv", "Scripts", "bdt-customer-mcp.exe"),
-    path.join(ROOT, ".npx-venv", "bin", "bdt-customer-mcp"),
-    path.join(ROOT, ".npx-venv", "Scripts", "bdt-customer-mcp.exe"),
+    path.join(ROOT, ".venv", "bin", "bdt-product-mcp"),
+    path.join(ROOT, ".venv", "Scripts", "bdt-product-mcp.exe"),
+    path.join(ROOT, ".npx-venv", "bin", "bdt-product-mcp"),
+    path.join(ROOT, ".npx-venv", "Scripts", "bdt-product-mcp.exe"),
   ];
   return candidates.find((p) => exists(p)) || null;
 }
@@ -134,7 +134,7 @@ async function main() {
     const ok = await ensurePythonEnvWithUv(uv);
     if (ok) {
       process.exit(
-        await run(uv, ["run", "--directory", ROOT, "bdt-customer-mcp", ...process.argv.slice(2)]),
+        await run(uv, ["run", "--directory", ROOT, "bdt-product-mcp", ...process.argv.slice(2)]),
       );
     }
   }
@@ -148,7 +148,7 @@ async function main() {
     which("python");
   if (!python) {
     console.error(
-      "[bdt-customer-mcp] 需要 Python 3.10+ 或安装 uv (https://docs.astral.sh/uv/).\n" +
+      "[bdt-product-mcp] 需要 Python 3.10+ 或安装 uv (https://docs.astral.sh/uv/).\n" +
         "推荐: curl -LsSf https://astral.sh/uv/install.sh | sh",
     );
     process.exit(1);
@@ -156,7 +156,7 @@ async function main() {
 
   const entry = await ensurePythonEnvWithPip(python);
   if (!entry) {
-    console.error("[bdt-customer-mcp] 无法准备 Python 运行环境");
+    console.error("[bdt-product-mcp] 无法准备 Python 运行环境");
     process.exit(1);
   }
   process.exit(await run(entry, process.argv.slice(2)));

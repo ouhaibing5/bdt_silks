@@ -115,6 +115,46 @@ class FreightTrendResult(CamelModel):
     items: list[FreightTrendPoint]
 
 
+class CustomerAnalysisItem(CamelModel):
+    rank: int | None = None
+    deal_customer_id: str | None = Field(default=None, alias="dealCustomerId")
+    customer_number: str | None = Field(default=None, alias="customerNumber")
+    customer_name: str | None = Field(default=None, alias="customerName")
+    customer_type: str | None = Field(default=None, alias="customerType")
+    customer_type_name: str | None = Field(default=None, alias="customerTypeName")
+    org_name: str | None = Field(default=None, alias="orgName")
+    sales_person_id: str | None = Field(default=None, alias="salesPersonId")
+    sales_person_name: str | None = Field(default=None, alias="salesPersonName")
+    orders: float | None = None
+    weight: float | None = None
+    volume: float | None = None
+    revenue: float | None = None
+    last_order_date: str | None = Field(default=None, alias="lastOrderDate")
+    prev_orders: float | None = Field(default=None, alias="prevOrders")
+    prev_weight: float | None = Field(default=None, alias="prevWeight")
+    prev_volume: float | None = Field(default=None, alias="prevVolume")
+    prev_revenue: float | None = Field(default=None, alias="prevRevenue")
+    returns: float | None = None
+    problems: float | None = None
+
+
+class CustomerAnalysisResult(CamelModel):
+    start_date: str = Field(alias="startDate")
+    end_date: str = Field(alias="endDate")
+    date_type: str = Field(alias="dateType")
+    summary_type: str = Field(alias="summaryType")
+    sort_name: str = Field(alias="sortName")
+    sort_order: str = Field(alias="sortOrder")
+    sales_person_id: str | None = Field(default=None, alias="salesPersonId")
+    belong_org_long_number: str | None = Field(default=None, alias="belongOrgLongNumber")
+    key_word: str | None = Field(default=None, alias="keyWord")
+    current_page: int | None = Field(default=None, alias="currentPage")
+    page_count: int | None = Field(default=None, alias="pageCount")
+    page_size: int | None = Field(default=None, alias="pageSize")
+    record_count: int | None = Field(default=None, alias="recordCount")
+    items: list[CustomerAnalysisItem]
+
+
 def summarize_customer(item: dict[str, Any]) -> CustomerSummary:
     assigned_org = item.get("assignedOrg") or {}
     return CustomerSummary(
@@ -193,6 +233,35 @@ def summarize_freight_trend(items: list[dict[str, Any]]) -> tuple[FreightTrendSu
         dayCount=len(points),
     )
     return summary, points
+
+
+def summarize_analysis_item(item: dict[str, Any], *, rank: int | None = None) -> CustomerAnalysisItem:
+    return CustomerAnalysisItem(
+        rank=rank,
+        dealCustomerId=(
+            str(item["dealCustomerId"]) if item.get("dealCustomerId") is not None else None
+        ),
+        customerNumber=item.get("customerNumber"),
+        customerName=item.get("customerName"),
+        customerType=item.get("customerType"),
+        customerTypeName=item.get("customerTypeName"),
+        orgName=item.get("orgName"),
+        salesPersonId=(
+            str(item["salesPersonId"]) if item.get("salesPersonId") is not None else None
+        ),
+        salesPersonName=item.get("salesPersonName"),
+        orders=_as_float(item.get("orders")),
+        weight=_as_float(item.get("weight")),
+        volume=_as_float(item.get("volume")),
+        revenue=_as_float(item.get("revenue")),
+        lastOrderDate=item.get("lastOrderDate"),
+        prevOrders=_as_float(item.get("prevOrders")),
+        prevWeight=_as_float(item.get("prevWeight")),
+        prevVolume=_as_float(item.get("prevVolume")),
+        prevRevenue=_as_float(item.get("prevRevenue")),
+        returns=_as_float(item.get("returns")),
+        problems=_as_float(item.get("problems")),
+    )
 
 
 def _as_float(value: Any) -> float | None:

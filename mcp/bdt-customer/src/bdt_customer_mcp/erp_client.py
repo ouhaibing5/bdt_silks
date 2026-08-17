@@ -70,6 +70,7 @@ class ErpClient:
     VIEW_API = "crm/dealCustomer/getViewInfo"
     FREIGHT_TREND_API = "oms/order/freightTrendData"
     FOLLOW_SAVE_API = "crm/customerFollow/save"
+    CUSTOMER_ANALYSIS_API = "oms/customerOutboundSummary/getCustomerAnalysisData"
 
     def __init__(self, settings: ErpSettings | None = None) -> None:
         self.settings = settings or get_settings()
@@ -220,3 +221,44 @@ class ErpClient:
         if follower_name:
             payload["name"] = follower_name
         return self._post(self.FOLLOW_SAVE_API, payload)
+
+    def get_customer_analysis_data(
+        self,
+        *,
+        start_date: str,
+        end_date: str,
+        date_type: str = "month",
+        summary_type: str = "in",
+        sales_person_id: str = "",
+        belong_org_long_number: str = "",
+        key_word: str = "",
+        product_line: str = "",
+        product_id: str = "",
+        current_page: int = 1,
+        page_size: int = 100,
+        sort_name: str = "orders",
+        sort_order: str = "desc",
+    ) -> dict[str, Any]:
+        """客户下单分析（票数/重量/体积/总业绩 revenue）。
+
+        sort_name 常用：orders / revenue / weight / volume；
+        按总业绩排名传 sort_name=revenue 且 sort_order=desc。
+        """
+        return self._post(
+            self.CUSTOMER_ANALYSIS_API,
+            {
+                "startDate": start_date,
+                "endDate": end_date,
+                "dateType": date_type,
+                "productLine": product_line,
+                "productId": product_id,
+                "belongOrgLongNumber": belong_org_long_number,
+                "salesPersonId": sales_person_id,
+                "keyWord": key_word,
+                "summaryType": summary_type,
+                "currentPage": current_page,
+                "pageSize": page_size,
+                "sortname": sort_name,
+                "sortorder": sort_order,
+            },
+        )

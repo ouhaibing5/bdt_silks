@@ -1,12 +1,12 @@
 {
-  "name": "@ouhaibing/customer-mcp",
-  "version": "0.2.3",
-  "description": "Yonglitong Badatong (八达通) ERP customer MCP — list/followup/accounts/freight/order-analysis/follow notes",
+  "name": "@ouhaibing/product-mcp",
+  "version": "0.1.0",
+  "description": "Yonglitong Badatong (八达通) ERP product MCP — price query/detail/export and customer quotes",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "bdt-customer-mcp": "bin/cli.js",
-    "customer-mcp": "bin/cli.js"
+    "bdt-product-mcp": "bin/cli.js",
+    "product-mcp": "bin/cli.js"
   },
   "files": [
     "bin",
@@ -23,14 +23,14 @@
     "model-context-protocol",
     "bdt",
     "8dt",
-    "crm",
-    "cursor",
-    "dingjian"
+    "product",
+    "pricing",
+    "cursor"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dingjian/bdt_silks.git",
-    "directory": "mcp/bdt-customer"
+    "url": "git+https://github.com/ouhaibing5/bdt_silks.git",
+    "directory": "mcp/bdt-product"
   },
   "publishConfig": {
     "access": "public",

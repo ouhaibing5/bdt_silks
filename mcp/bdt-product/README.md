@@ -2,7 +2,7 @@
 
 基于第三方签名鉴权，查询永利通八达通 ERP 物流产品指导价、价格明细、客户关联报价，并导出 Excel。
 
-支持通过 **`npx @ouhaibing/bdt-product-mcp`** 一键启动（Node 启动器 + Python MCP 实现）。
+支持通过 **`npx @ouhaibing/product-mcp`** 一键启动（Node 启动器 + Python MCP 实现）。
 
 ## 功能
 
@@ -21,7 +21,7 @@
 ### 发布到 npm 后
 
 ```bash
-npx -y @ouhaibing/bdt-product-mcp
+npx -y @ouhaibing/product-mcp
 ```
 
 Cursor `mcp.json`：
@@ -31,7 +31,7 @@ Cursor `mcp.json`：
   "mcpServers": {
     "bdt-product": {
       "command": "npx",
-      "args": ["-y", "@ouhaibing/bdt-product-mcp"],
+      "args": ["-y", "@ouhaibing/product-mcp"],
       "env": {
         "BDT_ERP_BASE_URL": "https://erptestdev.8dt.com/supply/",
         "BDT_ERP_SECRET": "your-secret",

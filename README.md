@@ -85,7 +85,7 @@ npx -y /path/to/bdt_silks/mcp/bdt-customer
   "mcpServers": {
     "bdt-product": {
       "command": "npx",
-      "args": ["-y", "@ouhaibing/bdt-product-mcp"],
+      "args": ["-y", "@ouhaibing/product-mcp"],
       "env": {
         "BDT_ERP_BASE_URL": "https://erptestdev.8dt.com/supply/",
         "BDT_ERP_SECRET": "...",

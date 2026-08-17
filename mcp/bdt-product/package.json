@@ -1,6 +1,6 @@
 {
   "name": "@ouhaibing/product-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Yonglitong Badatong (八达通) ERP product MCP — price query/detail/export and customer quotes",
   "license": "MIT",
   "type": "module",

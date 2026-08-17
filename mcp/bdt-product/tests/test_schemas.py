@@ -110,12 +110,16 @@ def test_build_export_download_url() -> None:
         cu_id="ylbdt1",
         user_id="u",
         dc="d",
-        oss_base_url="https://bdt-erp.oss-cn-shenzhen.aliyuncs.com",
+        oss_base_url="https://erposs.8dt.com/images/",
     )
     relative = "quote/ylbdt1/demo.xlsx?token"
     url = settings.build_export_download_url(relative)
-    assert url == (
-        "https://bdt-erp.oss-cn-shenzhen.aliyuncs.com/ylbdt1/quote/ylbdt1/demo.xlsx?token"
+    assert url == "https://erposs.8dt.com/images/quote/ylbdt1/demo.xlsx?token"
+
+    # 相对路径已含 images/ 时不重复拼接
+    assert (
+        settings.build_export_download_url("images/quote/ylbdt1/a.xlsx")
+        == "https://erposs.8dt.com/images/quote/ylbdt1/a.xlsx"
     )
 
 

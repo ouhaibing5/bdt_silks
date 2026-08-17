@@ -59,17 +59,22 @@ class ErpSettings(BaseSettings):
         )
 
     def build_export_download_url(self, relative_or_url: str) -> str:
-        """将导出接口返回的相对路径拼成 OSS 下载地址。"""
+        """将导出接口返回的相对路径拼成下载地址。
+
+        标准格式：
+        https://erposs.8dt.com/images/quote/{cuId}/xxx.xlsx?token
+        接口 data 已含 ``quote/{cuId}/...``，此处不再额外拼接 cuId。
+        """
         value = (relative_or_url or "").strip()
         if not value:
             return ""
         if value.startswith("http://") or value.startswith("https://"):
             return value
         base = self.oss_base_url.rstrip("/")
-        cu = self.cu_id.strip().strip("/")
         path = value.lstrip("/")
-        if cu:
-            return f"{base}/{cu}/{path}"
+        # 兼容误传已带 images/ 前缀的相对路径
+        if path.startswith("images/"):
+            path = path[len("images/") :]
         return f"{base}/{path}"
 
 

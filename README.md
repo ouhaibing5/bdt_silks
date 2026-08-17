@@ -93,7 +93,7 @@ npx -y /path/to/bdt_silks/mcp/bdt-customer
         "BDT_ERP_CU_ID": "...",
         "BDT_ERP_USER_ID": "...",
         "BDT_ERP_DC": "...",
-        "BDT_ERP_OSS_BASE_URL": "https://bdt-erp.oss-cn-shenzhen.aliyuncs.com"
+        "BDT_ERP_OSS_BASE_URL": "https://erposs.8dt.com/images/"
       }
     }
   }

@@ -108,4 +108,4 @@
 |------|------|
 | 查不到产品 | 换编号/名称；确认 product_line |
 | 客户列表无 quoteTimeId | 说明暂无生效报价时段，改查指导价或转产品同事 |
-| 导出成功但链接打不开 | 核对 `BDT_ERP_OSS_BASE_URL` / cu_id；把 relativePath 一并告知用户 |
+| 导出成功但链接打不开 | 核对 `BDT_ERP_OSS_BASE_URL`（默认 `https://erposs.8dt.com/images/`）；把 relativePath 一并告知用户 |

@@ -39,7 +39,7 @@ Cursor `mcp.json`：
         "BDT_ERP_CU_ID": "your-cu-id",
         "BDT_ERP_USER_ID": "your-user-id",
         "BDT_ERP_DC": "your-dc",
-        "BDT_ERP_OSS_BASE_URL": "https://bdt-erp.oss-cn-shenzhen.aliyuncs.com"
+        "BDT_ERP_OSS_BASE_URL": "https://erposs.8dt.com/images/"
       }
     }
   }
@@ -62,7 +62,7 @@ npx -y /absolute/path/to/bdt_silks/mcp/bdt-product
 | `BDT_ERP_CU_ID` | thirdCuId |
 | `BDT_ERP_USER_ID` | thirdUserId |
 | `BDT_ERP_DC` | thirdDc |
-| `BDT_ERP_OSS_BASE_URL` | 导出 Excel 的 OSS 前缀，默认阿里云深圳桶 |
+| `BDT_ERP_OSS_BASE_URL` | 导出 Excel 下载前缀，默认 `https://erposs.8dt.com/images/` |
 
 ## 业务约定
 

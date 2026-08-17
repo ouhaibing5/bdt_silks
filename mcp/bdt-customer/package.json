@@ -1,6 +1,6 @@
 {
   "name": "@ouhaibing/customer-mcp",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Yonglitong Badatong (八达通) ERP customer MCP — list/followup/accounts/freight/order-analysis/follow notes",
   "license": "MIT",
   "type": "module",
@@ -29,7 +29,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dingjian/bdt_silks.git",
+    "url": "git+https://github.com/ouhaibing5/bdt_silks.git",
     "directory": "mcp/bdt-customer"
   },
   "publishConfig": {
